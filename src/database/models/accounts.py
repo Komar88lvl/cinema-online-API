@@ -1,5 +1,5 @@
 import enum
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional, List
 
 from sqlalchemy import (
@@ -8,7 +8,10 @@ from sqlalchemy import (
     Boolean,
     DateTime,
     func,
-    ForeignKey
+    ForeignKey,
+    Enum,
+    Date,
+    Text
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -64,3 +67,16 @@ class User(Base):
         back_populates="user",
         cascade="all, delete-orphan"
     )
+
+
+class UserProfile(Base):
+    __tablename__ = "user_profiles"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    first_name: Mapped[Optional[str]] = mapped_column(String(100))
+    last_name: Mapped[Optional[str]] = mapped_column(String(100))
+    avatar: Mapped[Optional[str]] = mapped_column(String(255))
+    gender: Mapped[Optional[GenderEnum]] = mapped_column(Enum(GenderEnum))
+    date_of_birth: Mapped[Optional[date]] = mapped_column(Date)
+    info: Mapped[Optional[str]] = mapped_column(Text)
+    user: Mapped[User] = relationship("User", back_populates="profile")
