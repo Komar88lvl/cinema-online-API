@@ -74,26 +74,26 @@ class User(Base):
         back_populates="users"
     )
 
-    profile: Mapped[Optional["UserProfileModel"]] = relationship(
-        "UserProfileModel",
+    profile: Mapped[Optional["UserProfile"]] = relationship(
+        "UserProfile",
         back_populates="user",
         cascade="all, delete-orphan"
     )
 
-    activation_token: Mapped[Optional["ActivationTokenModel"]] = relationship(
-        "ActivationTokenModel",
+    activation_token: Mapped[Optional["ActivationToken"]] = relationship(
+        "ActivationToken",
         back_populates="user",
         cascade="all, delete-orphan"
     )
     password_reset_token: Mapped[
-        Optional["PasswordResetTokenModel"]
+        Optional["PasswordResetToken"]
     ] = relationship(
-        "PasswordResetTokenModel",
+        "PasswordResetToken",
         back_populates="user",
         cascade="all, delete-orphan"
     )
-    refresh_tokens: Mapped[List["RefreshTokenModel"]] = relationship(
-        "RefreshTokenModel",
+    refresh_tokens: Mapped[List["RefreshToken"]] = relationship(
+        "RefreshToken",
         back_populates="user",
         cascade="all, delete-orphan"
     )
