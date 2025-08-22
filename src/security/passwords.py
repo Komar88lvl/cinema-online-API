@@ -12,7 +12,8 @@ def hash_password(password: str) -> str:
     Hash a plain-text password using the configured password context.
 
     This function takes a plain-text password and returns its bcrypt hash.
-    The bcrypt algorithm is used with a specified number of rounds for enhanced security.
+    The bcrypt algorithm is used with a specified number
+    of rounds for enhanced security.
 
     Args:
         password (str): The plain-text password to hash.
@@ -27,7 +28,8 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     Verify a plain-text password against its hashed version.
 
-    This function compares a plain-text password with a hashed password and returns True
+    This function compares a plain-text
+    password with a hashed password and returns True
     if they match, and False otherwise.
 
     Args:
