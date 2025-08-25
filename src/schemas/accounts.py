@@ -31,3 +31,7 @@ class UserRegistrationResponseSchema(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+
+class UserLoginRequestSchema(BaseEmailPasswordSchema):
+    pass
