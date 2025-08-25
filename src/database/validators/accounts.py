@@ -1,5 +1,7 @@
 import re
 
+import email_validator
+
 
 def validate_password_strength(password: str) -> str:
     if len(password) < 8:
@@ -13,3 +15,13 @@ def validate_password_strength(password: str) -> str:
     if not re.search(r'[@$!%*?&#]', password):
         raise ValueError("Password must contain at least one special character: @, $, !, %, *, ?, #, &.")
     return password
+
+
+def validate_email(user_email: str) -> str:
+    try:
+        email_info = email_validator.validate_email(user_email, check_deliverability=False)
+        email = email_info.normalized
+    except email_validator.EmailNotValidError as error:
+        raise ValueError(str(error))
+    else:
+        return email
