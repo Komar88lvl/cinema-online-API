@@ -50,3 +50,7 @@ class UserActivationRequestSchema(BaseModel):
 
 class MessageResponseSchema(BaseModel):
     message: str
+
+
+class TokenRefreshRequestSchema(BaseModel):
+    refresh_token: str
