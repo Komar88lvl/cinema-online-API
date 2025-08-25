@@ -99,6 +99,18 @@ class User(Base):
     )
 
 
+class UserGroup(Base):
+    __tablename__ = "user_groups"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[UserGroupEnum] = mapped_column(Enum(UserGroupEnum), nullable=False, unique=True)
+
+    users: Mapped[List["User"]] = relationship("User", back_populates="group")
+
+    def __repr__(self):
+        return f"<UserGroupModel(id={self.id}, name={self.name})>"
+
+
 class UserProfile(Base):
     __tablename__ = "user_profiles"
 
