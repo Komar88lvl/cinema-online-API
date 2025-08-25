@@ -129,3 +129,9 @@ class UserProfile(Base):
     date_of_birth: Mapped[Optional[date]] = mapped_column(Date)
     info: Mapped[Optional[str]] = mapped_column(Text)
     user: Mapped[User] = relationship("User", back_populates="profile")
+
+    def __repr__(self):
+        return (
+            f"<UserProfileModel(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, "
+            f"gender={self.gender}, date_of_birth={self.date_of_birth})>"
+        )
