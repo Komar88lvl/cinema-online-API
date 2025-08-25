@@ -106,14 +106,21 @@ class User(Base):
         return self.group.name == group_name
 
     @classmethod
-    def create(cls, email: str, raw_password: str, group_id: int | Mapped[int]) -> "User":
+    def create(
+            cls,
+            email: str,
+            raw_password: str,
+            group_id: int | Mapped[int]
+    ) -> "User":
         user = cls(email=email, group_id=group_id)
         user.password = raw_password
         return user
 
     @property
     def password(self) -> None:
-        raise AttributeError("Password is write-only. Use the setter to set the password.")
+        raise AttributeError(
+            "Password is write-only. Use the setter to set the password."
+        )
 
     @password.setter
     def password(self, raw_password: str) -> None:
@@ -128,14 +135,23 @@ class User(Base):
         return validators.validate_email(value.lower())
 
     def __repr__(self):
-        return f"<UserModel(id={self.id}, email={self.email}, is_active={self.is_active})>"
+        return (f"<UserModel(id={self.id}, "
+                f"email={self.email}, is_active={self.is_active})>")
 
 
 class UserGroup(Base):
     __tablename__ = "user_groups"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    name: Mapped[UserGroupEnum] = mapped_column(Enum(UserGroupEnum), nullable=False, unique=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+    name: Mapped[UserGroupEnum] = mapped_column(
+        Enum(UserGroupEnum),
+        nullable=False,
+        unique=True
+    )
 
     users: Mapped[List["User"]] = relationship("User", back_populates="group")
 
@@ -166,7 +182,8 @@ class UserProfile(Base):
 
     def __repr__(self):
         return (
-            f"<UserProfileModel(id={self.id}, first_name={self.first_name}, last_name={self.last_name}, "
+            f"<UserProfileModel(id={self.id}, "
+            f"first_name={self.first_name}, last_name={self.last_name}, "
             f"gender={self.gender}, date_of_birth={self.date_of_birth})>"
         )
 
@@ -174,7 +191,11 @@ class UserProfile(Base):
 class TokenBase(Base):
     __abstract__ = True
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        primary_key=True,
+        autoincrement=True
+    )
     token: Mapped[str] = mapped_column(
         String(64),
         unique=True,
@@ -187,29 +208,40 @@ class TokenBase(Base):
         default=lambda: datetime.now(timezone.utc) + timedelta(days=1)
     )
 
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )
 
 
 class ActivationToken(TokenBase):
     __tablename__ = "activation_tokens"
 
-    user: Mapped[User] = relationship("User", back_populates="activation_token")
+    user: Mapped[User] = relationship(
+        "User",
+        back_populates="activation_token"
+    )
 
     __table_args__ = (UniqueConstraint("user_id"),)
 
     def __repr__(self):
-        return f"<ActivationTokenModel(id={self.id}, token={self.token}, expires_at={self.expires_at})>"
+        return (f"<ActivationTokenModel(id={self.id}, "
+                f"token={self.token}, expires_at={self.expires_at})>")
 
 
 class PasswordResetToken(TokenBase):
     __tablename__ = "password_reset_tokens"
 
-    user: Mapped[User] = relationship("User", back_populates="password_reset_token")
+    user: Mapped[User] = relationship(
+        "User",
+        back_populates="password_reset_token"
+    )
 
     __table_args__ = (UniqueConstraint("user_id"),)
 
     def __repr__(self):
-        return f"<PasswordResetToken(id={self.id}, token={self.token}, expires_at={self.expires_at})>"
+        return (f"<PasswordResetToken(id={self.id}, "
+                f"token={self.token}, expires_at={self.expires_at})>")
 
 
 class RefreshToken(TokenBase):
@@ -224,9 +256,18 @@ class RefreshToken(TokenBase):
     )
 
     @classmethod
-    def create(cls, user_id: int | Mapped[int], days_valid: int, token: str) -> "RefreshToken":
+    def create(
+            cls,
+            user_id: int | Mapped[int],
+            days_valid: int,
+            token: str
+    ) -> "RefreshToken":
         expires_at = datetime.now(timezone.utc) + timedelta(days=days_valid)
         return cls(user_id=user_id, expires_at=expires_at, token=token)
 
     def __repr__(self):
-        return f"<RefreshToken(id={self.id}, token={self.token}, expires_at={self.expires_at})>"
+        return (
+            f"<RefreshToken(id={self.id}, "
+            f"token={self.token}, "
+            f"expires_at={self.expires_at})>"
+        )
