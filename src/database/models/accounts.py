@@ -158,6 +158,11 @@ class UserProfile(Base):
     date_of_birth: Mapped[Optional[date]] = mapped_column(Date)
     info: Mapped[Optional[str]] = mapped_column(Text)
     user: Mapped[User] = relationship("User", back_populates="profile")
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        unique=True
+    )
 
     def __repr__(self):
         return (
