@@ -18,3 +18,7 @@ class BaseEmailPasswordSchema(BaseModel):
     @classmethod
     def validate_password(cls, value):
         return validators.validate_password_strength(value)
+
+
+class UserRegistrationRequestSchema(BaseEmailPasswordSchema):
+    pass
