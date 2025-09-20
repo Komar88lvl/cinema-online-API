@@ -60,3 +60,4 @@ class TestingSettings(BaseAppSettings):
             'PATH_TO_MOVIES_CSV',
             str(self.BASE_DIR / "database" / "seed_data" / "test_data.csv")
         )
+
